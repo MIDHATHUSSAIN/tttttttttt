@@ -1,0 +1,17 @@
+ <dxg:GridControl.View>
+     <dxg:TableView ShowGroupPanel="False"
+        AutoWidth="False"
+        AllowEditing="False">
+
+         <dxg:TableView.RowCellMenuCustomizations>
+             <dxb:BarButtonItem Content="Update"
+                    Command="{Binding DataContext.TeacherUpdateButton, RelativeSource={RelativeSource AncestorType=dxg:GridControl}}"
+                    CommandParameter="{Binding Row.Row}"/>
+
+             <dxb:BarButtonItem Content="Delete"
+                    Command="{Binding DataContext.TeacherDeleteButton, RelativeSource={RelativeSource AncestorType=dxg:GridControl}}"
+                    CommandParameter="{Binding Row.Row}"/>
+         </dxg:TableView.RowCellMenuCustomizations>
+
+     </dxg:TableView>
+ </dxg:GridControl.View>
