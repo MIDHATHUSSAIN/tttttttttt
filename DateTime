@@ -1,0 +1,52 @@
+          <RCInput:DateTimePicker Margin="10,0,0,0" MinValue="{Binding MinJoiningDate}"
+  MaxValue="{Binding MaxJoiningDate}"  DateValue="{Binding TeacherData.TeacherDateofJoining,Mode=TwoWay}"/>
+
+public DateTime MinJoiningDate => new DateTime(DateTime.Now.Year, 1, 1);
+public DateTime MaxJoiningDate => new DateTime(DateTime.Now.Year, 12, 31);
+
+
+                ThemedMessageBox.Show(
+    "Operation completed successfully!",
+    "Success",
+    MessageBoxButton.OK
+);
+
+    <dxe:DateEdit Height="40"
+EditValue="{Binding DateValue, RelativeSource={RelativeSource AncestorType=local:DateTimePicker}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+MinValue="{Binding MinValue, RelativeSource={RelativeSource AncestorType=local:DateTimePicker}}"
+MaxValue="{Binding MaxValue, RelativeSource={RelativeSource AncestorType=local:DateTimePicker}}"
+Mask="d"
+MaskUseAsDisplayFormat="True">
+
+        <dxe:DateEdit.StyleSettings>
+            <dxe:DateEditNavigatorWithTimePickerStyleSettings/>
+        </dxe:DateEdit.StyleSettings>
+
+    </dxe:DateEdit>
+
+        public static readonly DependencyProperty MinValueProperty =
+DependencyProperty.Register(
+    "MinValue",
+    typeof(DateTime),
+    typeof(DateTimePicker),
+    new PropertyMetadata(DateTime.MinValue));
+
+        public DateTime MinValue
+        {
+            get => (DateTime)GetValue(MinValueProperty);
+            set => SetValue(MinValueProperty, value);
+        }
+
+
+        public static readonly DependencyProperty MaxValueProperty =
+            DependencyProperty.Register(
+                "MaxValue",
+                typeof(DateTime),
+                typeof(DateTimePicker),
+                new PropertyMetadata(DateTime.MaxValue));
+
+        public DateTime MaxValue
+        {
+            get => (DateTime)GetValue(MaxValueProperty);
+            set => SetValue(MaxValueProperty, value);
+        }
