@@ -1,0 +1,58 @@
+<dxe:ComboBoxEdit x:Name="myCombo"
+                  ItemsSource="{Binding YourDataList}"
+                  EditValue="{Binding SelectedItems, Mode=TwoWay}"
+                  ValidateOnTextInput="True"
+                  IncrementalFiltering="True">
+    
+    <dxe:ComboBoxEdit.StyleSettings>
+        <dxe:CheckedComboBoxStyleSettings />
+    </dxe:ComboBoxEdit.StyleSettings>
+
+    <dxmvvm:Interaction.Behaviors>
+        <dxmvvm:EventToCommand EventName="EditValueChanging" 
+                               Command="{Binding LimitSelectionCommand}" 
+                               PassEventArgsToCommand="True"/>
+    </dxmvvm:Interaction.Behaviors>
+</dxe:ComboBoxEdit>
+
+
+  // In your ViewModel
+public void LimitSelectionCommand(EditValueChangingEventArgs e) {
+    var newValue = e.NewValue as List<object>;
+    
+    // If the user tries to select more than 2, stop them
+    if (newValue != null && newValue.Count > 2) {
+        e.IsCancel = true;
+        e.Handled = true;
+        
+        // Optional: Show a quick message
+        // ThemedMessageBox.Show("You can only select up to 2 items.");
+    }
+DevExpress ComboBoxEdit stores multiple selections as a List<object> in the EditValue. To get your @"{item1}:{item2}" format, you can process it in the setter of your property:
+
+C#
+private List<object> _selectedItems;
+public List<object> SelectedItems {
+    get => _selectedItems;
+    set {
+        _selectedItems = value;
+        OnPropertyChanged();
+
+        // Format the string for your data.item
+        if (_selectedItems != null && _selectedItems.Count > 0) {
+            // This joins the list into "Item1:Item2"
+            string formattedData = string.Join(":", _selectedItems);
+            
+            // Assign to your target object
+            myData.Item = formattedData;
+        }
+    }
+}
+Why use EditValueChanging?
+If you simply use a standard SelectionChanged event, the third item is added and then removed, which causes a "flicker" in the UI. By using EditValueChanging and setting e.IsCancel = true, the checkbox never actually gets checked, providing a much smoother user experience.
+
+Alternative: Token Mode
+If you want it to look like modern tags (like Outlook or Gmail), you can use TokenComboBoxStyleSettings instead of CheckedComboBoxStyleSettings. It works with the same logic but looks more like modern "pills" inside the text box.
+
+  
+}
